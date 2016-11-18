@@ -1,5 +1,4 @@
 
-var http = require('http');
 var url = require('url'), 
     locale = require("locale");
     express= require('express');
@@ -9,9 +8,14 @@ app.use('/', express.static('./public'));
 
 app.get('/api/whoami', function (req, res) {
 
+    var ip = (req.headers && req.headers['x-forwarded-for']) || 
+    req.ip || 
+    req._remoteAddress || 
+    (req.connection && req.connection.remoteAddress);
+
     var locales = new locale.Locales(req.headers["accept-language"]);
     var userAgent = require('ua-parser').parse(req.headers['user-agent']);
-    var requestInfo =  JSON.stringify(toJSON(userAgent, locale.Locale["default"], req.host));
+    var requestInfo =  JSON.stringify(toJSON(userAgent, locale.Locale["default"], ip));
     res.send(requestInfo);
 });
 
