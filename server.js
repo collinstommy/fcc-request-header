@@ -8,7 +8,11 @@ app.use('/', express.static('./public'));
 
 app.get('/api/whoami', function (req, res) {
 
-    var ip = req.ip;
+    var ip = req.headers['x-forwarded-for'] ||
+     req.connection.remoteAddress ||
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+
     var locales = new locale.Locales(req.headers["accept-language"]);
     var userAgent = require('ua-parser').parse(req.headers['user-agent']);
 
