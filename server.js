@@ -11,7 +11,7 @@ app.get('/api/whoami', function (req, res) {
 
     var locales = new locale.Locales(req.headers["accept-language"]);
     var userAgent = require('ua-parser').parse(req.headers['user-agent']);
-    var requestInfo =  JSON.stringify(toJSON(userAgent, locale.Locale["default"], req.connection.remoteAddress));
+    var requestInfo =  JSON.stringify(toJSON(userAgent, locale.Locale["default"], req.host));
     res.send(requestInfo);
 });
 
